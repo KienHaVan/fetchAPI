@@ -23,12 +23,12 @@ function getCourses(callback) {
 
 function createCourse(data, callback) {
     var options = {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     };
-    fetch(courseApi + '/5', options)
+    fetch(courseApi, options)
         .then(function(response) {
             return response.json();
         })
