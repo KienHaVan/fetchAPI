@@ -41,14 +41,34 @@ function createCourse(data, callback) {
 function renderCourses(courses) {
     listCoursesBlock = document.querySelector('#list-courses');
     var htmls = courses.map(function(course) {
-        return `<li>
+        return `<li >
                     <h2>${course.name}</h2>
                     <p>${course.description}</p>
+                    <button onclick="handleDeleteCourse(${course.id})">DELETE</button>
                 </li>`;
     });
     listCoursesBlock.innerHTML = htmls.join('');
 
 }
+
+// DELETE COURSE
+function handleDeleteCourse(id) {
+    var options = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'}
+    };
+    fetch(courseApi + '/' + id, options)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            renderCourses(data);
+        });
+}
+
+
+
 // CREATE COURSES From FORM
 function handleCreateForm() {
     var createBtn = document.querySelector("#create");
