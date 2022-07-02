@@ -63,7 +63,7 @@ function handleDeleteCourse(id) {
             return response.json();
         })
         .then(function(data) {
-            renderCourses(data);
+            getCourses(renderCourses);
         });
 }
 
