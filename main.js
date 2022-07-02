@@ -41,7 +41,7 @@ function createCourse(data, callback) {
 function renderCourses(courses) {
     listCoursesBlock = document.querySelector('#list-courses');
     var htmls = courses.map(function(course) {
-        return `<li >
+        return `<li class="course-item-${course.id}">
                     <h2>${course.name}</h2>
                     <p>${course.description}</p>
                     <button onclick="handleDeleteCourse(${course.id})">DELETE</button>
@@ -63,7 +63,10 @@ function handleDeleteCourse(id) {
             return response.json();
         })
         .then(function(data) {
-            getCourses(renderCourses);
+            var courseItem = document.querySelector('.course-item-' + id);
+            if (courseItem) {
+                courseItem.remove();
+            }
         });
 }
 
