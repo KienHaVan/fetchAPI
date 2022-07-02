@@ -1,4 +1,6 @@
-courseApi = 'http://localhost:3000/courses'
+var courseApi = 'http://localhost:3000/courses';
+var inputName = document.querySelector('input[name="name"]');
+var inputDescription = document.querySelector('input[name="description"]');
 
 function start() {
     getCourses(renderCourses);
@@ -45,10 +47,47 @@ function renderCourses(courses) {
                     <h2>${course.name}</h2>
                     <p>${course.description}</p>
                     <button onclick="handleDeleteCourse(${course.id})">DELETE</button>
+                    <button onclick="handleModifyCourse(${course.id})">MODIFY</button>
                 </li>`;
     });
     listCoursesBlock.innerHTML = htmls.join('');
 
+}
+
+// MODIFY COURSE
+function modifyCourse(id, data, callback) {
+    var options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    };
+    fetch(courseApi + '/' + id, options)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(callback);
+}
+    
+function handleModifyCourse(id) {
+    var name = document.querySelector('.course-item-' + id + ' h2').innerHTML;
+    var description = document.querySelector('.course-item-' + id + ' p').innerHTML;
+    inputName.value = name;
+    inputDescription.value = description;
+    var modifyBtn = document.querySelector("#create");
+    modifyBtn.innerText = "MODIFY";
+    
+    modifyBtn.onclick = function() {
+        var name = inputName.value;
+        var description = inputDescription.value;
+        var formData = {
+            name: name,
+            description: description
+        };
+        modifyCourse(id, formData, function() {
+            getCourses(renderCourses);
+        });
+    }
 }
 
 // DELETE COURSE
@@ -76,8 +115,8 @@ function handleDeleteCourse(id) {
 function handleCreateForm() {
     var createBtn = document.querySelector("#create");
     createBtn.onclick = function() {
-        var name = document.querySelector('input[name="name"]').value;
-        var description = document.querySelector('input[name="description"]').value;
+        var name = inputName.value;
+        var description = inputDescription.value;
 
         var formData = {
             name: name,
