@@ -80,7 +80,9 @@ function handleCreateForm() {
             name: name,
             description: description
         };
-        createCourse(formData, renderCourses);
+        createCourse(formData, function() {
+            getCourses(renderCourses);
+        });
     }
 }
 
